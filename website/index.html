@@ -75,5 +75,110 @@
                 </tr>
             </table>
         </div>
+
+<h2 align="middle" class="page-break">Part II:  Simulation via numerical integration</h2>
+<p style="line-height:200%">
+    Before doing the following experiment, let us show you the cloth's final resting state with default parameters.
+    <div align="middle">
+        <img src="part2/original.png" align="middle" width="50%" />
+        <figcaption>default final resting state</figcaption>
+    </div>
+</p>
+<h3>
+    Experiment with some the parameters in the simulation.
+</h3>
+
+<h4>
+    The effects of changing the spring constant <b>ks</b>.
+</h4>
+<p style="line-height:200%">
+    The current spring constant ks is 5000N/m. In the following experiments, we change our ks to a very low value (100 N/m) and a very high value
+    (100000 N/m). Here is final resting state based on different ks values for your reference:
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part2/1_1.png" align="middle" width="450px" />
+                    <figcaption>ks = 100 N/m</figcaption>
+                </td>
+                <td>
+                    <img src="part2/1_2.png" align="middle" width="450px" />
+                    <figcaption>ks = 100000 N/m</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+<p style="line-height:200%">
+    The biggest differences among these images on the top of each cloth. If the ks value is too high, the cloth may appear rigid and unnatural,
+    while if it's too low, the cloth may look too floppy and lack structure. (There is little falloff with high Ks value and too much falloff with low Ks value).
+    This is very easy to understand based on <b>Hooke's law</b> that when ks is too high, it means that the cloth is very resistant to deformation, which makes it more rigid and less flexible.
+    On the other hand, when ks is too low, it means that the cloth is not resistant enough to deformation, which makes it more floppy and less structured.
+</p>
+</p>
+<h4>
+    The effects of changing the spring constant <b>density</b>.
+</h4>
+<p style="line-height:200%">
+    The current spring constant density is 15g/cm * cm. In the following experiments, we change our density to a very low value (1g/cm * cm) and a very high value
+    (100g/cm * cm). Here is final resting state based on different density values for your reference:
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part2/2_1.png" align="middle" width="450px" />
+                    <figcaption>density = 1g/cm * cm</figcaption>
+                </td>
+                <td>
+                    <img src="part2/2_2.png" align="middle" width="450px" />
+                    <figcaption>density = 100g/cm * cm</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+</p><p style="line-height:200%">
+    The biggest differences among these images on the top of each cloth too. Higher density means higher mass. With the same acceleration, 
+    higher mass means bigger force. While remaining the same ks (the resistant ability is the same), bigger force will deform the cloth more than
+    smaller force.
+</p>
+</p>
+<h4>
+    The effects of changing the spring constant <b>damping</b>.
+</h4>
+
+<p style="line-height:200%">
+    The current spring constant damping is 20%. In the following experiments, we change our damping value to a very low value (0%) and a very high value
+    (100%). Here is final resting state based on different damping values for your reference:
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part2/3_1.png" align="middle" width="450px" />
+                    <figcaption>damping = 0%</figcaption>
+                </td>
+                <td>
+                    <img src="part2/3_2.png" align="middle" width="450px" />
+                    <figcaption>damping = 100%</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+</p><p style="line-height:200%">
+    If the damping value is too low, the cloth may continue to oscillate or vibrate even after the external force has been removed (see picture damping = 0%), which can result in unnatural-looking cloth behavior.
+    On the other hand, if the damping value is too high, the cloth may lose its flexibility and become overly sluggish (see picture damping = 100%), making it difficult to achieve a natural-looking movement.
+    A high damping value can lead to slow simulation times as it takes more time for the cloth to come to rest after a deformation or force has been applied.
+    A high damping value can also lead to slow simulation times as the cloth may continue to oscillate or vibrate even after the external force has been removed.
+</p>
+</p>
+<h3>
+    Show us a screenshot of your shaded cloth from scene/pinned4.json in its final resting state!
+</h3>
+
+<p style="line-height:200%">
+    Here is the screenshot of shaded cloth from scene/pinned4.json in its final resting state. We do not modify any parameter.
+    <div align="middle">
+        <img src="part2/pinned4.png" align="middle" width="50%" />
+        <figcaption>pinned4.json default final resting state</figcaption>
+    </div>
+</p>
 </body>
 </html>

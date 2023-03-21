@@ -112,8 +112,6 @@ void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParame
   double mass = width * height * cp->density / num_width_points / num_height_points;
   double delta_t = 1.0f / frames_per_sec / simulation_steps;
   // TODO (Part 2): Compute total force acting on each point mass.
- 
-  // TODO (Part 2): Compute total force acting on each point mass.
   Vector3D a(0, 0, 0);
   for (int i = 0; i < external_accelerations.size(); i++) {
       // compute total acceleration
