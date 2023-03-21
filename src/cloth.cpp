@@ -31,6 +31,7 @@ Cloth::~Cloth() {
 }
 
 void Cloth::buildGrid() {
+    
   // TODO (Part 1): Build a grid of masses and springs.
     for (int y = 0; y < num_height_points; y++) {
         for (int x = 0; x < num_width_points; x++) {
@@ -38,7 +39,7 @@ void Cloth::buildGrid() {
             double q = double(y) * (height / num_height_points);
             Vector3D position;
             if (orientation == 0) {// 0 means horizontal
-                position = Vector3D(p, 0, q);
+                position = Vector3D(p, 1.0, q);
             }
             else { // vertical
                 double f = (double)rand() / RAND_MAX;
@@ -47,7 +48,7 @@ void Cloth::buildGrid() {
             }
             bool whether_pin = false;
             for (int i = 0; i < pinned.size(); i++) {
-                if (pinned[i][0] == position[0] && pinned[i][1] == position[1]) {
+                if (pinned[i][0] == x && pinned[i][1] == y) {
                     whether_pin = true;
                 }
             }
@@ -102,6 +103,7 @@ void Cloth::buildGrid() {
             }
         }
     }
+    
 }
 
 void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParameters *cp,
@@ -109,13 +111,47 @@ void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParame
                      vector<CollisionObject *> *collision_objects) {
   double mass = width * height * cp->density / num_width_points / num_height_points;
   double delta_t = 1.0f / frames_per_sec / simulation_steps;
-
   // TODO (Part 2): Compute total force acting on each point mass.
+ 
+  // TODO (Part 2): Compute total force acting on each point mass.
+  Vector3D a(0, 0, 0);
+  for (int i = 0; i < external_accelerations.size(); i++) {
+      // compute total acceleration
+      a += external_accelerations[i];
+  }
 
-
+  for (int i = 0; i < point_masses.size(); i++) {
+      // F = m * a and store it into point_masses
+      point_masses[i].forces = mass * a;
+  }
+  // STRUCTURAL = 0, SHEARING = 1, BENDING = 2
+  for (Spring& s : springs) {
+      if ((cp->enable_structural_constraints && s.spring_type == 0) ||
+          (cp->enable_shearing_constraints && s.spring_type == 1) ||
+          (cp->enable_bending_constraints && s.spring_type == 2)) {
+          Vector3D pab = s.pm_a->position - s.pm_b->position;
+          double Fs = cp->ks * (pab.norm() - s.rest_length);
+          if (s.spring_type == 2) { // the bending constraint should be weaker
+              Fs *= 0.2;
+          }
+          Vector3D final_force = pab.unit() * Fs;
+          // one add and one minus
+          s.pm_a->forces -= final_force;
+          s.pm_b->forces += final_force;
+      }
+  }
   // TODO (Part 2): Use Verlet integration to compute new point mass positions
 
-
+  for (PointMass& p : point_masses) {
+      if (!p.pinned) {// if point is not pinned
+          Vector3D xt_dt = p.last_position;
+          Vector3D a = p.forces / mass;
+          Vector3D xt = p.position;
+          Vector3D new_position = xt + (1.0 - (cp->damping / 100)) * (xt - xt_dt) + a * delta_t * delta_t;
+          p.last_position = xt;
+          p.position = new_position;
+      }
+  }
   // TODO (Part 4): Handle self-collisions.
 
 
@@ -124,7 +160,28 @@ void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParame
 
   // TODO (Part 2): Constrain the changes to be such that the spring does not change
   // in length more than 10% per timestep [Provot 1995].
-
+  for (Spring& s : springs) {
+      Vector3D p_a = s.pm_a->position;
+      Vector3D p_b = s.pm_b->position;
+      double length = (p_a - p_b).norm() - s.rest_length * 1.1; // the spring's length is at most 10% greater than its rest_length
+      if (length > 0) {
+          Vector3D offset = (p_a - p_b).unit() * length;
+          if (!s.pm_a->pinned && !s.pm_b->pinned) {
+              s.pm_a->position -= 0.5 * offset;
+              s.pm_b->position += 0.5 * offset;
+          }
+          else if (!s.pm_a->pinned) {
+              s.pm_a->position -= offset;
+          }
+          else if (!s.pm_b->pinned) {
+              s.pm_b->position += offset;
+          }
+          else {
+              continue;
+          }
+      }
+  }
+  
 }
 
 void Cloth::build_spatial_map() {
