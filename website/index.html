@@ -14,6 +14,11 @@
   h1, h2, h3, h4 {
     font-family: 'Source Sans Pro', sans-serif;
   }
+    @media print {
+        .page-break {
+            page-break-before: always;
+        }
+    }
 </style>
 <title>CS 184 Mesh Editor</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -25,17 +30,50 @@
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2017</h1>
 <h1 align="middle">Project 4: Cloth Simulator</h1>
-<h2 align="middle">YOUR NAME, CS184-??</h2>
+<h2 align="middle">Puyuan Yi, Haoda Li</h2>
 
+    <!-- Add Website URL -->
+<h2 align="middle">Website URL: <a href="TODO">https://cal-cs184-student.github.io/p4-clothsim-sp23-idm_p4/</a></h2>
 <br><br>
 
 <div>
 
 <h2 align="middle">Overview</h2>
-<p>Give a high-level overview of what you implemented in this project. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the project.</p>
+<p style="line-height:200%">Give a high-level overview of what you implemented in this project. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the project.</p>
 
 <h2 align="middle">Part I: Masses and springs</h2>
 
+<h3>
+    Take some screenshots of scene/pinned2.json from a viewing angle where you can clearly see the cloth wireframe to show the structure of your point masses and springs.
+</h3>
 
+   <div align="middle">
+      <img src="part1/1.png" align="middle" width="100%" />
+      <figcaption>scene/pinned2.json</figcaption>
+   </div>
+
+<h3>
+    Show us what the wireframe looks like (1) without any shearing constraints, (2) with only shearing constraints, and (3) with all constraints.
+</h3>
+            <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="part1/2_1.png" align="middle" width="450px" />
+                        <figcaption>without any shearing constraints</figcaption>
+                    </td>
+                    <td>
+                        <img src="part1/2_2.png" align="middle" width="450px" />
+                        <figcaption>with only shearing constraints</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="part1/2_3.png" align="middle" width="450px" />
+                        <figcaption>with all constraints</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
 </body>
 </html>

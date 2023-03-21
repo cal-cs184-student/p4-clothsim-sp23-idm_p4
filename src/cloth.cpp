@@ -32,7 +32,76 @@ Cloth::~Cloth() {
 
 void Cloth::buildGrid() {
   // TODO (Part 1): Build a grid of masses and springs.
-
+    for (int y = 0; y < num_height_points; y++) {
+        for (int x = 0; x < num_width_points; x++) {
+            double p = double(x) * (width / num_width_points);
+            double q = double(y) * (height / num_height_points);
+            Vector3D position;
+            if (orientation == 0) {// 0 means horizontal
+                position = Vector3D(p, 0, q);
+            }
+            else { // vertical
+                double f = (double)rand() / RAND_MAX;
+                double z = -1.0 / 1000 + f * (1.0 / 1000 + 1.0 / 1000);
+                position = Vector3D(p, q, z);
+            }
+            bool whether_pin = false;
+            for (int i = 0; i < pinned.size(); i++) {
+                if (pinned[i][0] == position[0] && pinned[i][1] == position[1]) {
+                    whether_pin = true;
+                }
+            }
+            PointMass cur_point(position, whether_pin);
+            // finished storing point_masses back to cloth
+            point_masses.emplace_back(cur_point);
+        }
+    }
+    for (int y = 0; y < num_height_points; y++) {
+        for (int x = 0; x < num_width_points; x++) {
+            //Left of pm
+            if (x > 0) {
+                PointMass* a = &point_masses[y * num_width_points + x - 1];
+                PointMass* b = &point_masses[y * num_width_points + x];
+                Spring s = Spring(a, b, STRUCTURAL);
+                springs.emplace_back(s);
+            }
+            //Above
+            if (y > 0) {
+                PointMass* a = &point_masses[(y - 1) * num_width_points + x];
+                PointMass* b = &point_masses[y * num_width_points + x];
+                Spring s = Spring(a, b, STRUCTURAL);
+                springs.emplace_back(s);
+            }
+            //Upper Left
+            if (x > 0 && y > 0) {
+                PointMass* a = &point_masses[(y - 1) * num_width_points + x - 1];
+                PointMass* b = &point_masses[y * num_width_points + x];
+                Spring s = Spring(a, b, SHEARING);
+                springs.emplace_back(s);
+            }
+            //upper Right
+            if (x + 1 < num_width_points && y > 0) {
+                PointMass* a = &point_masses[(y - 1) * num_width_points + x + 1];
+                PointMass* b = &point_masses[y * num_width_points + x];
+                Spring s = Spring(a, b, SHEARING);
+                springs.emplace_back(s);
+            }
+            //two above
+            if ((y - 2) >= 0) {
+                PointMass* a = &point_masses[(y - 2) * num_width_points + x];
+                PointMass* b = &point_masses[y * num_width_points + x];
+                Spring s = Spring(a, b, BENDING);
+                springs.emplace_back(s);
+            }
+            //Two left from point mass
+            if ((x - 2) >= 0) {
+                PointMass* a = &point_masses[y * num_width_points + x - 2];
+                PointMass* b = &point_masses[y * num_width_points + x];
+                Spring s = Spring(a, b, BENDING);
+                springs.emplace_back(s);
+            }
+        }
+    }
 }
 
 void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParameters *cp,
