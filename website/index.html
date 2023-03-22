@@ -28,7 +28,7 @@
 
 <body>
 
-<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2017</h1>
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
 <h1 align="middle">Project 4: Cloth Simulator</h1>
 <h2 align="middle">Puyuan Yi, Haoda Li</h2>
 
@@ -39,7 +39,12 @@
 <div>
 
 <h2 align="middle">Overview</h2>
-<p style="line-height:200%">Give a high-level overview of what you implemented in this project. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the project.</p>
+<p style="line-height:200%">
+    In this project, we implement all the required parts for the cloth simulation. First, we utilize masses and springs to represent our cloth. Then we update the movement
+    of our created masses and springs using numerical integration. Next we handled different collision situations containning collisions with planes, collisions with spheres
+    and self-collisions. Later we wrote the shader program to create shader effect for our cloth.
+    After finishing all the parts above, our code can create a nice simulation of cloth movement, collision and different shader effects.
+</p>
 
 <h2 align="middle">Part I: Masses and springs</h2>
 
@@ -298,20 +303,90 @@
     </li>
 </ul>
 
-<h2 align="middle" class="page-break">Part V:  Cloth Sim</h2>
+<h2 align="middle" class="page-break">Part V:  Shaders</h2>
 <h3 style="line-height:200%">
     Explain in your own words what is a shader program and how vertex and fragment shaders work together to create lighting and material effects.
 </h3>
-
+<p style="line-height:200%">
+    A shader program is a set of instructions that describe how to render objects in a 3D scene,
+    including how they should be colored, shaded, and lit. Comparing with our previous rendering assignments that were operated utilizing CPU,
+    Shaders are isolated programs that run in parallel on GPU, executing sections of the graphics pipeline, taking in an input, and outputing a single 4 dimensional vector.
+    shaders are typically divided into two main types: vertex shaders and fragment shaders.
+    <ul>
+        <li style="line-height:200%">
+            <b>vertex shaders</b>: Vertex shaders are responsible for transforming the vertices of 3D objects from their original positions in 3D space to their final positions on the 2D screen.
+            They also compute other per-vertex data such as texture coordinates, normals, and tangents that are used later in the pipeline.
+        </li>
+        <li style="line-height:200%">
+            <b>fragment shaders</b>:  Fragment shaders operate on a per-pixel basis and are responsible for computing the final color of each pixel on the screen. They take as input interpolated data from the vertex shader, such as texture coordinates and normals,
+            and use that data to compute lighting and material effects.
+        </li>
+        <li style="line-height:200%">
+            <b>How do they work together</b>:  The vertex shader computes per-vertex data such as normals, which are used by the fragment shader to compute lighting effects. The fragment shader takes the interpolated normals and other data from the vertex shader and 
+            computes the final color of each pixel based on the lighting and material properties of the object.
+        </li>
+    </ul>
+</p>
 <h3 style="line-height:200%">
     Explain the Blinn-Phong shading model in your own words. Show a screenshot of your Blinn-Phong shader outputting only the ambient component, a screen shot only outputting the diffuse component, a screen shot only outputting the specular component, and one using the entire Blinn-Phong model.
 </h3>
-
+<p style="line-height:200%">
+    The Blinn-Phong model calculates the color of a pixel by considering three main factors: ambient, diffuse, and specular lighting.
+    <ul>
+        <li style="line-height:200%">
+            <b>ambient lighting</b>: Ambient lighting represents the overall lighting in the scene and is typically a constant value for all pixels.
+        </li>
+        <li style="line-height:200%">
+            <b>diffuse lighting</b>: Diffuse lighting is caused by the interaction of light with the rough surface of an object, and it is calculated based on the angle between the light source and the surface normal of the object. The larger the angle, the less light is reflected, resulting in darker areas on the object.
+        </li>
+        <li style="line-height:200%">
+            <b>specular lighting</b>: Specular lighting is caused by the interaction of light with a smooth or glossy surface of an object, and it is calculated based on the angle between the viewer's position and the reflection of the light source. This creates bright spots or highlights on the surface of the object.
+        </li>
+    </ul>
+    The followings are required screenshots:
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part5/3_1.png" align="middle" width="450px" />
+                    <figcaption>Only ambient</figcaption>
+                </td>
+                <td>
+                    <img src="part5/3_2.png" align="middle" width="450px" />
+                    <figcaption>Only diffuse</figcaption>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <img src="part5/3_3.png" align="middle" width="450px" />
+                    <figcaption>Only specular</figcaption>
+                </td>
+                <td>
+                    <img src="part5/3_4.png" align="middle" width="450px" />
+                    <figcaption>all</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+</p>
 
 <h3 style="line-height:200%">
     Show a screenshot of your texture mapping shader using your own custom texture by modifying the textures in /textures/.
 </h3>
-
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part5/2_1.png" align="middle" width="450px" />
+                    <figcaption>before falling down</figcaption>
+                </td>
+                <td>
+                    <img src="part5/2_2.png" align="middle" width="450px" />
+                    <figcaption>after falling down</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
 
 <h3 style="line-height:200%">
     Show a screenshot of bump mapping on the cloth and on the sphere. 
@@ -322,14 +397,103 @@
     Compare the two approaches and resulting renders in your own words. 
     Compare how your the two shaders react to the sphere by changing the sphere mesh's coarseness by using -o 16 -a 16 and then -o 128 -a 128.
 </h3>
+<p style="line-height:200%">
+    Before doing the following experiments, let us show your our selected texture, we change our texture from texture_2.png to texture_4.png.
+    The corresponding pictures are shown below:
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part5/texture_2.png" align="middle" width="450px" />
+                    <figcaption>default texture</figcaption>
+                </td>
+                <td>
+                    <img src="part5/texture_4.png" align="middle" width="450px" />
+                    <figcaption>our selected texture</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <b>Here is the screenshot of bump mapping on the cloth and on the sphere</b>:
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part5/4_1.png" align="middle" width="450px" />
+                    <figcaption>bump mapping on the cloth</figcaption>
+                </td>
+                <td>
+                    <img src="part5/4_2.png" align="middle" width="450px" />
+                    <figcaption>bump mapping on the sphere</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <b>Here is a screenshot of displacement mapping on the sphere</b>:
+    <div align="middle">
+        <img src="part5/4_3.png" align="middle" width="50%" />
+        <figcaption>displacement mapping on the sphere</figcaption>
+    </div>
+    <ul>
+        <li style="line-height:200%">
+            <b>bump mapping</b>: Bump mapping modifies the normal vectors of an object so that the fragment shader
+            gives the illusion of detail (such as bumps) on an object.
+        </li>
+        <li style="line-height:200%">
+            <b>displacement mapping</b>: Displacement mapping actually modifies the geometry of the underlying mesh to simulate surface detail.Like bump mapping, it uses a grayscale texture map to specify the displacement of each vertex of the mesh, but in this case, the displacement is actually applied to the mesh geometry. This creates a more realistic effect, as the surface detail is physically present in the mesh geometry. However, this technique is more computationally expensive than bump mapping, as it requires additional processing power to modify the mesh geometry.
+        </li>
+        <li style="line-height:200%">
+            <b>rendering result comparison</b>: As we can see in the experiments, bump mapping and displacement mapping can produce similar effects, depending on the complexity of the surface detail being simulated.
+            However, displacement mapping can produce more accurate and realistic results, as it actually modifies the geometry of the object to simulate surface detail.
+        </li>
+    </ul>
 
+    We do the following experiments based on the sphere:
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part5/5_1.png" align="middle" width="450px" />
+                    <figcaption>bump mapping -o 16 -a 16</figcaption>
+                </td>
+                <td>
+                    <img src="part5/5_2.png" align="middle" width="450px" />
+                    <figcaption>bump mapping  -o 128 -a 128</figcaption>
+                </td>
+            </tr>
+            <tr align="center">
+                <td>
+                    <img src="part5/5_3.png" align="middle" width="450px" />
+                    <figcaption>displacement mapping -o 16 -a 16</figcaption>
+                </td>
+                <td>
+                    <img src="part5/5_4.png" align="middle" width="450px" />
+                    <figcaption>displacement mapping  -o 128 -a 128</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+    We can see with higher resolution, we can create smoother and better result. With lower resolution, circles will look like polygons.
+    And the there is some discontinuity happened on the intersection points for each line.
+</p>
 <h3 style="line-height:200%">
     Show a screenshot of your mirror shader on the cloth and on the sphere.
+    <div align="middle">
+        <table style="width:100%">
+            <tr align="center">
+                <td>
+                    <img src="part5/1_1.png" align="middle" width="450px" />
+                    <figcaption>on the cloth</figcaption>
+                </td>
+                <td>
+                    <img src="part5/1_2.png" align="middle" width="450px" />
+                    <figcaption>on the sphere</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
 </h3>
 
-<h3 style="line-height:200%">
-    Explain what you did in your custom shader, if you made one.
-</h3>
 
 </body>
 </html>
