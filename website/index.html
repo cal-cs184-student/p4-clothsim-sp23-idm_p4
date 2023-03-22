@@ -180,5 +180,156 @@
         <figcaption>pinned4.json default final resting state</figcaption>
     </div>
 </p>
+
+<h2 align="middle" class="page-break">Part III:  Handling collisions with other objects</h2>
+
+
+<h3 style="line-height:200%">
+    Show us screenshots of your shaded cloth from scene/sphere.json in its final resting state on the sphere using the default ks = 5000 as well as with ks = 500 and ks = 50000. Describe the differences in the results.
+</h3>
+     <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="part3/1_1.png" align="middle" width="450px" />
+                        <figcaption>ks = 5000</figcaption>
+                    </td>
+                    <td>
+                        <img src="part3/1_2.png" align="middle" width="450px" />
+                        <figcaption>ks = 500</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="part3/1_3.png" align="middle" width="450px" />
+                        <figcaption>ks = 50000</figcaption>
+                    </td>
+                </tr>
+            </table>
+     </div>
+     <p style="line-height:200%">
+         If the ks value is too high, the cloth may appear rigid and unnatural,
+         while if it's too low, the cloth may look too floppy and lack structure. (There is little falloff with high Ks value and too much falloff with low Ks value in our experiment images).
+         This is very easy to understand based on <b>Hooke's law</b> that when ks is too high, it means that the cloth is very resistant to deformation, which makes it more rigid and less flexible.
+         On the other hand, when ks is too low, it means that the cloth is not resistant enough to deformation, which makes it more floppy and less structured.
+     </p>
+<h3 style="line-height:200%">
+    Show us a screenshot of your shaded cloth lying peacefully at rest on the plane.
+</h3>
+    <div align="middle">
+        <img src="part3/2.png" align="middle" width="50%" />
+        <figcaption>shaded cloth lying peacefully at rest on the plane</figcaption>
+    </div>
+
+
+
+
+<h2 align="middle" class="page-break">Part IV:  Handling self-collisions</h2>
+
+<h3 style="line-height:200%">
+    Show us at least 3 screenshots that document how your cloth falls and folds on itself, starting with an early, initial self-collision and ending with the cloth at a more restful state (even if it is still slightly bouncy on the ground).
+</h3>
+     <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="part4/1_1.png" align="middle" width="450px" />
+                        <figcaption>start</figcaption>
+                    </td>
+                    <td>
+                        <img src="part4/1_2.png" align="middle" width="450px" />
+                        <figcaption>intermiediate(1)</figcaption>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td>
+                        <img src="part4/1_3.png" align="middle" width="450px" />
+                        <figcaption>intermiediate(2)</figcaption>
+                    </td>
+                    <td>
+                        <img src="part4/1_4.png" align="middle" width="450px" />
+                        <figcaption>final</figcaption>
+                    </td>
+                </tr>
+            </table>
+     </div>
+<h3 style="line-height:200%">
+    Vary the density as well as ks and describe with words and screenshots how they affect the behavior of the cloth as it falls on itself.
+</h3>
+<ul>
+    <li style="line-height:200%">
+        <b>Varing the density:</b> The original density is 15. We modify it to a small value and a high value to observe the behavior:
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="part4/2_1.png" align="middle" width="450px" />
+                        <figcaption>density = 1</figcaption>
+                    </td>
+                    <td>
+                        <img src="part4/2_2.png" align="middle" width="450px" />
+                        <figcaption>density = 100</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        Higher density means higher mass. With the same acceleration,
+        higher mass means bigger force. While remaining the same ks (the resistant ability is the same), bigger force will deform the cloth more than
+        smaller force.So we can see more folds of our cloth with higher density and less with small density.
+    </li>
+    <li style="line-height:200%">
+        <b>Varing ks:</b> The original ks is 500. We modify it to a small value and a high value to observe the behavior:
+        <div align="middle">
+            <table style="width:100%">
+                <tr align="center">
+                    <td>
+                        <img src="part4/3_1.png" align="middle" width="450px" />
+                        <figcaption>ks = 500</figcaption>
+                    </td>
+                    <td>
+                        <img src="part4/3_2.png" align="middle" width="450px" />
+                        <figcaption>ks = 50000</figcaption>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        Higher ks means higher resistance power. While remaining the same density (the outer force is the same), stronger resistance power will resist outer deformation.
+        So we can see less folds of our cloth with higher ks because of stronger resistance ability and more folds with small ks.
+    </li>
+</ul>
+
+<h2 align="middle" class="page-break">Part V:  Cloth Sim</h2>
+<h3 style="line-height:200%">
+    Explain in your own words what is a shader program and how vertex and fragment shaders work together to create lighting and material effects.
+</h3>
+
+<h3 style="line-height:200%">
+    Explain the Blinn-Phong shading model in your own words. Show a screenshot of your Blinn-Phong shader outputting only the ambient component, a screen shot only outputting the diffuse component, a screen shot only outputting the specular component, and one using the entire Blinn-Phong model.
+</h3>
+
+
+<h3 style="line-height:200%">
+    Show a screenshot of your texture mapping shader using your own custom texture by modifying the textures in /textures/.
+</h3>
+
+
+<h3 style="line-height:200%">
+    Show a screenshot of bump mapping on the cloth and on the sphere. 
+    Show a screenshot of displacement mapping on the sphere. 
+    Use the same texture for both renders. 
+    You can either provide your own texture or use one of the ones in the textures directory, 
+    BUT choose one that's not the default texture_2.png. 
+    Compare the two approaches and resulting renders in your own words. 
+    Compare how your the two shaders react to the sphere by changing the sphere mesh's coarseness by using -o 16 -a 16 and then -o 128 -a 128.
+</h3>
+
+<h3 style="line-height:200%">
+    Show a screenshot of your mirror shader on the cloth and on the sphere.
+</h3>
+
+<h3 style="line-height:200%">
+    Explain what you did in your custom shader, if you made one.
+</h3>
+
 </body>
 </html>

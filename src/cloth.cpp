@@ -150,11 +150,21 @@ void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParame
           p.position = new_position;
       }
   }
+
+  //TODO(Part 3) : Handle collisions with other primitives.
+  for (PointMass& pm : point_masses) {
+      for (auto primitives : *collision_objects) {
+          primitives->collide(pm);
+      }
+  }
+
   // TODO (Part 4): Handle self-collisions.
-
-
-  // TODO (Part 3): Handle collisions with other primitives.
-
+  build_spatial_map();
+  for (PointMass& pm : point_masses) {
+      self_collide(pm, simulation_steps);
+  }
+  
+  
 
   // TODO (Part 2): Constrain the changes to be such that the spring does not change
   // in length more than 10% per timestep [Provot 1995].
@@ -189,18 +199,53 @@ void Cloth::build_spatial_map() {
   map.clear();
 
   // TODO (Part 4): Build a spatial map out of all of the point masses.
-
+  for (PointMass& pm : point_masses) {
+      float val = hash_position(pm.position);
+      if (map[val]) {
+          map[val]->push_back(&pm);
+      }
+      else {
+          map[val] = new vector<PointMass*>;
+          map[val]->push_back(&pm);
+      }
+  }
 }
 
 void Cloth::self_collide(PointMass &pm, double simulation_steps) {
   // TODO (Part 4): Handle self-collision for a given point mass.
+    
+    float hash_val = hash_position(pm.position);
+    int num = 0;
+    Vector3D correction_vector(0, 0, 0);
+    if (map[hash_val]) {
+        for (PointMass *cand : *map[hash_val]) {
+            if (cand == &pm) { // the same point
+                continue;
+            }
+            Vector3D direction = pm.position - cand->position;
+            if (direction.norm() < 2 * thickness) {// with in 2 * thickness
+                num++;
+                correction_vector += (direction.unit() * 2 * thickness - direction);
+            }
+        }
+    }
+    if (num != 0) {
+        pm.position += (correction_vector / (simulation_steps * num));
+    }
 
 }
 
 float Cloth::hash_position(Vector3D pos) {
   // TODO (Part 4): Hash a 3D position into a unique float identifier that represents membership in some 3D box volume.
+    float w = 3 * width / num_width_points;
+    float h = 3 * height / num_height_points;
+    float t = max(w, h);
 
-  return 0.f; 
+    float a = (pos.x - fmod(pos.x, w)) / w;
+    float b = (pos.y - fmod(pos.y, h)) / h;
+    float c = (pos.z - fmod(pos.z, t)) / t;
+
+    return a + b * num_width_points + c * num_height_points * num_width_points;
 }
 
 ///////////////////////////////////////////////////////
